@@ -10,13 +10,7 @@ const port = process.env.PORT || 3000;
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["POST"],
-    credentials: true,
-  }),
-);
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,6 +35,7 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({
       status: 500,
       error: "Gagal memproses permintaan ke AI",
+      message: error.message,
     });
   }
 });
